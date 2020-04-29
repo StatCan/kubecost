@@ -47,7 +47,7 @@ jobs:
         release: 'kubecost'
         namespace: 'kubecost'
         tillerNamespace: 'kubecost'
-        chart: './charts/stable/kubecost'
+        chart: './charts/stable/cost-analyzer'
         token: '${{ github.token }}'
         values: |
           cost-analyzer:
