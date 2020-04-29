@@ -12,8 +12,9 @@
 # 2. Change the values for the REGISTRY_NAME, CLUSTER_NAME, CLUSTER_RESOURCE_GROUP and NAMESPACE environment variables (below).
 name: release
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -31,26 +32,28 @@ jobs:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: ${{ env.CLUSTER_NAME }}
         resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+
     # Clone the Helm chart
     - run: |
         git clone https://github.com/statcan/charts.git
         mkdir -p /home/runner/work/_temp/_github_home/
         cp $KUBECONFIG /home/runner/work/_temp/_github_home/KUBECONFIG
+
     # Deploy Helm chart
-    - uses: 'sylus/helm@master'
+    - uses: 'statcan/actions/helm@master'
       env:
         KUBECONFIG: /github/home/KUBECONFIG
       with:
         release: 'kubecost'
         namespace: 'kubecost'
-        tiller-namespace: 'kubecost'
+        tillerNamespace: 'kubecost'
         chart: './charts/stable/kubecost'
         token: '${{ github.token }}'
         values: |
           cost-analyzer:
-            kubecostToken: "${{ secret.KUBECOST_TOKEN }}"
+            kubecostToken: "${{ secrets.KUBECOST_TOKEN }}"
             ingress:
-              enabled: true
+              enabled: false
               annotations:
                 kubernetes.io/ingress.class: istio
               hosts:
