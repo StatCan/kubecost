@@ -60,9 +60,15 @@ jobs:
                 - "kubecost.${{ secrets.DOMAIN_NAME }}"
               paths:
                 - '/*'
-            clusterName: "${{ env.CLUSTER_NAME }}"
-            currencyCode: "USD"
-            azureBillingRegion: US
-            azureSubscriptionID: ${{ secrets.SUBSCRIPTION_ID }}
-            azureClientID: ${{ secrets.CLIENT_ID }}
-            azureTenantID: ${{ secrets.TENANT_ID }}
+            tolerations:
+              - key: "dedicated"
+                operator: "Equal"
+                value: "gpu"
+                effect: "NoSchedule"
+            kubecostProductConfigs:
+              clusterName: "${{ env.CLUSTER_NAME }}"
+              currencyCode: "USD"
+              azureBillingRegion: US
+              azureSubscriptionID: ${{ secrets.SUBSCRIPTION_ID }}
+              azureClientID: ${{ secrets.CLIENT_ID }}
+              azureTenantID: ${{ secrets.TENANT_ID }}
