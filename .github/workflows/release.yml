@@ -72,3 +72,6 @@ jobs:
               azureSubscriptionID: ${{ secrets.SUBSCRIPTION_ID }}
               azureClientID: ${{ secrets.CLIENT_ID }}
               azureTenantID: ${{ secrets.TENANT_ID }}
+              productKey:
+                enabled: true
+                key: ${{ secrets.PRODUCT_KEY }}
