@@ -63,7 +63,7 @@ jobs:
             kubecostProductConfigs:
               clusterName: "${{ env.CLUSTER_NAME }}"
               currencyCode: "USD"
-              azureBillingRegion: US
+              azureBillingRegion: CA
               azureSubscriptionID: ${{ secrets.SUBSCRIPTION_ID }}
               azureClientID: ${{ secrets.CLIENT_ID }}
               azureTenantID: ${{ secrets.TENANT_ID }}
