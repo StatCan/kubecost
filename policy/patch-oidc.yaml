@@ -1,0 +1,9 @@
+- op: replace
+  path: /spec/clientId
+  value: XXXXX-XXXXX-XXXXX
+- op: replace
+  path: /spec/clientSecretRef/name
+  value: kubecost
+- op: replace
+  path: /spec/discoveryUrl
+  value: https://kubecost.example.ca

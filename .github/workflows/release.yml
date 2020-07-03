@@ -27,17 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ env.CLUSTER_NAME }}
-        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
 
     # Clone the Helm chart
     - run: |
         git clone https://github.com/statcan/charts.git
         mkdir -p /home/runner/work/_temp/_github_home/
-        cp $KUBECONFIG /home/runner/work/_temp/_github_home/KUBECONFIG
+        echo ${{ secrets.KUBECONFIG }} | base64 --decode > /home/runner/work/_temp/_github_home/KUBECONFIG
 
     # Deploy Helm chart
     - uses: 'statcan/actions/helm@master'
@@ -53,7 +48,7 @@ jobs:
           cost-analyzer:
             kubecostToken: "${{ secrets.KUBECOST_TOKEN }}"
             ingress:
-              enabled: false
+              enabled: true
               annotations:
                 kubernetes.io/ingress.class: istio
               hosts:
@@ -75,3 +70,17 @@ jobs:
               productKey:
                 enabled: true
                 key: ${{ secrets.PRODUCT_KEY }}
+
+    # Run Kustomize
+    - name: kustomize
+      uses: statcan/actions/kubectl@master
+      with:
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+        args: apply -k .
+      env:
+        KUBECOST_OIDC_CLIENT: ${{ secrets.KUBECOST_OIDC_CLIENT }}
+        KUBECOST_OIDC_SECRET: ${{ secrets.KUBECOST_OIDC_SECRET }}
+        KUBECOST_OIDC_DISCOVERY: ${{ secrets.KUBECOST_OIDC_DISCOVERY }}
+        KUBECOST_ADMIN_POLICY_GROUP: ${{ secrets.KUBECOST_ADMIN_POLICY_GROUP }}
+        KUBECOST_TENANT1_POLICY_GROUP: ${{ secrets.KUBECOST_TENANT1_POLICY_GROUP }}
+        KUBECOST_TENANT1_DOMAIN_NAME: ${{ secrets.KUBECOST_TENANT1_DOMAIN_NAME }}

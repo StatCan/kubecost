@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: kubecost
+  labels:
+    app.kubernetes.io/name: kubecost
+spec:
+  host: "*.kubecost.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: "DISABLE"
+---
+apiVersion: security.cloud.ibm.com/v1
+kind: OidcConfig
+metadata:
+  name: kubecost
+spec:
+  clientId: clientid
+  clientSecretRef:
+    key: client-secret
+    name: kubecost
+  discoveryUrl: discoveryurl
+  scopes: null
+---
+apiVersion: security.cloud.ibm.com/v1
+kind: Policy
+metadata:
+  name: kubecost
+spec:
+  targets:
+  - paths:
+    - method: ALL
+      policies:
+      - config: kubecost
+        policyType: oidc
+        redirectUri: https://kubecost.example.ca
+        rules:
+        - claim: groups
+          match: ANY
+          source: id_token
+          values:
+          - group_admin
+          - group_alt
+      prefix: /
+    serviceName: kubecost

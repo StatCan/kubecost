@@ -1,0 +1,84 @@
+# ----------------------------------------------------
+# apiVersion and kind of Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Adds namespace to all resources.
+namespace: kubecost
+
+# Adds namespace to all resources.
+# namePrefix: kubecost-tenant1-
+
+# Labels to add to all resources and selectors.
+commonLabels:
+  app.kubernetes.io/instance: kubecost-tenant1
+
+# Each entry in this list should resolve to a directory
+# containing a kustomization file, else the
+# customization fails.
+#
+# The entry could be a relative path pointing to a local directory
+# or a url pointing to a directory in a remote repo.
+# The url should follow hashicorp/go-getter URL format
+# https://github.com/hashicorp/go-getter#url-format
+#
+# The presence of this field means this file (the file
+# you a reading) is an _overlay_ that further
+# customizes information coming from these _bases_.
+#
+# Typical use case: a dev, staging and production
+# environment that are mostly identical but differing
+# crucial ways (image tags, a few server arguments,
+# etc. that differ from the common base).
+bases:
+- ../base
+
+# Each entry in this list results in the creation of
+# one Secret resource (it's a generator of n secrets).
+secretGenerator:
+- name: kubecost
+  # env is a path to a file to read lines of key=val
+  # you can only specify one env file per secret.
+  env: secret.txt
+  type: Opaque
+
+# Each entry in this list should resolve to
+# a kubernetes object and a JSON patch that will be applied
+# to the object.
+# The JSON patch is documented at https://tools.ietf.org/html/rfc6902
+#
+# target field points to a kubernetes object within the same kustomization
+# by the object's group, version, kind, name and namespace.
+# path field is a relative file path of a JSON patch file.
+# The content in this patch file can be either in JSON format as
+#
+#  [
+#    {"op": "add", "path": "/some/new/path", "value": "value"},
+#    {"op": "replace", "path": "/some/existing/path", "value": "new value"}
+#  ]
+#
+# or in YAML format as
+#
+# - op: add
+#   path: /some/new/path
+#   value: value
+# - op:replace
+#   path: /some/existing/path
+#   value: new value
+patchesJson6902:
+- target:
+    group: security.cloud.ibm.com
+    version: v1
+    kind: OidcConfig
+    name: kubecost
+  path: patch-oidc.yaml
+- target:
+    group: security.cloud.ibm.com
+    version: v1
+    kind: Policy
+    name: kubecost
+  path: patch-policy.yaml
+
+# generatorOptions modify behavior of all ConfigMap and Secret generators
+generatorOptions:
+  disableNameSuffixHash: true

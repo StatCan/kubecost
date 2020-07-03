@@ -1,0 +1,15 @@
+- op: replace
+  path: /spec/targets/0/paths/0/policies/0/redirectUri
+  value: https://kubecost.example.ca
+- op: replace
+  path: /spec/targets/0/paths/0/policies/0/rules/0/values/0
+  value: XXXXX-XXXXX-XXXXX
+- op: replace
+  path: /spec/targets/0/paths/0/policies/0/rules/0/values/1
+  value: XXXXX-XXXXX-XXXXX
+- op: replace
+  path: /spec/targets/0/serviceName
+  value: kubecost-cost-analyzer
+- op: replace
+  path: /spec/targets/0/paths/0/policies/0/config
+  value: kubecost
