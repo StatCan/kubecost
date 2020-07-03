@@ -60,6 +60,13 @@ jobs:
                 operator: "Equal"
                 value: "gpu"
                 effect: "NoSchedule"
+            prometheus:
+              nodeExporter:
+                tolerations:
+                  - key: "dedicated"
+                    operator: "Equal"
+                    value: "gpu"
+                    effect: "NoSchedule"
             kubecostProductConfigs:
               clusterName: "${{ env.CLUSTER_NAME }}"
               currencyCode: "USD"
