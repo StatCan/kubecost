@@ -55,18 +55,11 @@ jobs:
                 - "kubecost.${{ secrets.DOMAIN_NAME }}"
               paths:
                 - '/*'
-            tolerations:
-              - key: "dedicated"
-                operator: "Equal"
-                value: "gpu"
-                effect: "NoSchedule"
             prometheus:
               nodeExporter:
                 tolerations:
                   - key: "dedicated"
-                    operator: "Equal"
-                    value: "gpu"
-                    effect: "NoSchedule"
+                    operator: "Exists"
             kubecostProductConfigs:
               clusterName: "${{ env.CLUSTER_NAME }}"
               currencyCode: "USD"
