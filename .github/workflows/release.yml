@@ -62,7 +62,7 @@ jobs:
                     operator: "Exists"
             kubecostProductConfigs:
               clusterName: "${{ env.CLUSTER_NAME }}"
-              currencyCode: "USD"
+              currencyCode: "CA"
               azureBillingRegion: CA
               azureSubscriptionID: ${{ secrets.SUBSCRIPTION_ID }}
               azureClientID: ${{ secrets.CLIENT_ID }}
