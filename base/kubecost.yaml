@@ -40,6 +40,7 @@ spec:
           source: id_token
           values:
           - group_admin
-          - group_alt
+          - group_tenant1
+          - group_tenant2
       prefix: /
     serviceName: kubecost

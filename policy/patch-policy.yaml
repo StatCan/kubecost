@@ -8,6 +8,9 @@
   path: /spec/targets/0/paths/0/policies/0/rules/0/values/1
   value: XXXXX-XXXXX-XXXXX
 - op: replace
+  path: /spec/targets/0/paths/0/policies/0/rules/0/values/2
+  value: XXXXX-XXXXX-XXXXX
+- op: replace
   path: /spec/targets/0/serviceName
   value: kubecost-cost-analyzer
 - op: replace
