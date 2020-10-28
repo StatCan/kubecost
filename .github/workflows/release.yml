@@ -70,6 +70,13 @@ jobs:
                 enabled: true
                 key: ${{ secrets.PRODUCT_KEY }}
 
+    # Patch kubecost ingress
+    - name: kubectl
+      uses: statcan/actions/kubectl@master
+      with:
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+        args: -n kubecost patch --type=json ingress kubecost-cost-analyzer -p '[{"op":"replace","path":"/spec/rules/0/http/paths/0/backend/servicePort","value":9090}]'
+
     # Run Kustomize
     - name: kustomize
       uses: statcan/actions/kubectl@master
