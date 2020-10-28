@@ -75,7 +75,7 @@ jobs:
       uses: statcan/actions/kubectl@master
       with:
         kubeconfig: ${{ secrets.KUBECONFIG }}
-        args: "-n kubecost patch --type=json ingress kubecost-cost-analyzer -p '[{\"op\":\"replace\",\"path\":\"/spec/rules/0/http/paths/0/backend/servicePort\",\"value\":9090}]'"
+        args: -n kubecost patch --type=json ingress kubecost-cost-analyzer -p '[{\"op\":\"replace\",\"path\":\"/spec/rules/0/http/paths/0/backend/servicePort\",\"value\":9090}]'
 
     # Run Kustomize
     - name: kustomize
