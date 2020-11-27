@@ -69,6 +69,8 @@ jobs:
               productKey:
                 enabled: true
                 key: ${{ secrets.PRODUCT_KEY }}
+          destinationRule:
+            enabled: true
 
     # Patch kubecost ingress
     - name: kubectl
